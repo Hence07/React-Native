@@ -6,6 +6,8 @@ import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
 import Swipeout from 'react-native-swipeout';
 import { deleteFavorite } from '../redux/ActionCreators';
+import * as Animatable from 'react-native-animatable';
+
 
 
 const mapStateToProps = state => {
@@ -52,7 +54,10 @@ class Favorites extends Component {
             ];
 
             return (
+                <Animatable.View animation='fadeInRightBig' duration={2000}>
+
                 <Swipeout right={rightButton} autoClose={true}>
+                    
                     <ListItem
                         title={item.name}
                         subtitle={item.description}
@@ -60,6 +65,8 @@ class Favorites extends Component {
                         onPress={() => navigate('CampsiteInfo', {campsiteId: item.id})}
                     />
                 </Swipeout>
+                </Animatable.View>
+
             );
         };
 

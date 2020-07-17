@@ -6,6 +6,8 @@ import { COMMENTS } from '../shared/comments';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
 import { postFavorite } from '../redux/ActionCreators';
+import * as Animatable from 'react-native-animatable';
+
 
 
 const mapStateToProps = state => {
@@ -23,8 +25,10 @@ const mapDispatchToProps = {
 function RenderCampsite(props) {
 
     const {campsite} = props;
-    if (campsite){
-        return(
+
+    if (campsite) {
+        return (
+            <Animatable.View animation='fadeInDown' duration={2000} delay={1000}>
             <Card
                 featuredTitle={campsite.name}
                 image={{uri: baseUrl + campsite.image}}>
@@ -41,6 +45,7 @@ function RenderCampsite(props) {
                         console.log('Already set as a favorite') : props.markFavorite()}
                 />
             </Card>
+            </Animatable.View>
               );
                 }    
     return <View />;
@@ -59,13 +64,15 @@ function RenderComments({comments}) {
     };
 
     return (
-        <Card title='Comments'>
+        <Animatable.View animation='fadeInUp' duration={2000} delay={1000}>
+            <Card title='Comments'>
             <FlatList
                 data={comments}
                 renderItem={renderCommentItem}
                 keyExtractor={item => item.id.toString()}
             />
         </Card>
+        </Animatable.View>
     );
 }
 
