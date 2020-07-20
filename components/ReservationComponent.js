@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, ScrollView, Animated, StyleSheet,
-    Picker, Switch, Button, Modal } from 'react-native';
+    Picker, Switch, Button, Modal, Alert } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 
 class Reservation extends Component {
@@ -12,7 +12,7 @@ class Reservation extends Component {
             campers: 1,
             hikeIn: false,
             date: '',
-            showModal: false,
+            // showModal: false,
             scaleValue: new Animated.Value(0)
 
         };
@@ -36,23 +36,23 @@ class Reservation extends Component {
         this.animate();
     }
 
-    toggleModal() {
-        this.setState({showModal: !this.state.showModal});
-    }
+    // toggleModal() {
+    //     this.setState({showModal: !this.state.showModal});
+    // }
 
-    handleReservation() {
-        console.log(JSON.stringify(this.state));
-        this.toggleModal();
-    }
+    // handleReservation() {
+    //     console.log(JSON.stringify(this.state));
+    //     this.toggleModal();
+    // }
 
-    resetForm() {
-        this.setState({
-            campers: 1,
-            hikeIn: false,
-            date: '',
-            showModal: false
-        });
-    }
+    // resetForm() {
+    //     this.setState({
+    //         campers: 1,
+    //         hikeIn: false,
+    //         date: '',
+    //         showModal: false
+    //     });
+    // }
 
     render() {
         return (
@@ -108,12 +108,33 @@ class Reservation extends Component {
                 </View>
                 <View style={styles.formRow}>
                     <Button
-                        onPress={() => this.handleReservation()}
+                        // onPress={() => this.handleReservation()}
+                        onPress = {() => {
+                            Alert.alert(
+                                'Begin Search?',
+                                'Numbers of Campers' +this.state.campers+ '\n'  +
+                                'Hike-In' +this.state.hikeIn+ '\n'+
+                                'Date: ' +this.state.date+ '',
+                                [
+                                    { 
+                                        text: 'Cancel', 
+                                        onPress: () => console.log('Not Deleted'),
+                                        style: ' cancel'
+                                    },
+                                    {
+                                        text: 'OK',
+                                        onPress: () => this.props.deleteFavorite
+                                    }
+                                ],
+                                { cancelable: false }
+                            );
+                        }
+                    }
                         title='Search'
                         color='#5637DD'
                         accessibilityLabel='Tap me to search for available campsites to reserve'
                     />
-                     <Modal
+                     {/* <Modal
                     animationType={'slide'}
                     transparent={false}
                     visible={this.state.showModal}
@@ -132,7 +153,7 @@ class Reservation extends Component {
                             title='Close'
                         />
                     </View>
-                </Modal>
+                </Modal> */}
                 </View>
                 </Animated.ScrollView>
         );
