@@ -63,6 +63,39 @@ function RenderCampsite(props) {
         }
     });
 
+    const recognizeComment = ({dx}) => (dx >200) ? true : false;
+
+    const panResponder2 = PanResponder.create({
+        onStartShouldSetPanResponder: () => true,
+        onPanResponderGrant: () => {
+            view.current.rubberBand(1000)
+            .then(endState => console.log(endState.finished ? 'finished' : 'canceled'));
+        },
+        onPanResponderEnd: (e, gestureState) => {
+            console.log('pan responder end', gestureState);
+            if (recognizeComment(gestureState)) {
+                Alert.alert(
+                    'Add Comment',
+                    'Are you sure you wish to add ' + campsite.name + ' to favorites?',
+                    [
+                        {
+                            text: 'Cancel',
+                            style: 'cancel',
+                            onPress: () => console.log('Cancel Pressed')
+                        },
+                        {
+                            text: 'OK',
+                            onPress: () => props.favorite ?
+                                console.log('Already set as a favorite') : props.markFavorite()
+                        }
+                    ],
+                    { cancelable: false }
+                );
+            }
+            return true;
+        }
+    });
+
     if (campsite) {
         return (
             <Animatable.View
@@ -70,7 +103,8 @@ function RenderCampsite(props) {
                 duration={2000}
                 delay={1000}
                 ref={view}
-                {...panResponder.panHandlers}>
+                {...panResponder.panHandlers}
+                {...panResponder2.panHandlers}>
             <Card
                 featuredTitle={campsite.name}
                 image={{uri: baseUrl + campsite.image}}>
